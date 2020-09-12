@@ -1,0 +1,9 @@
+#pragma once
+
+#include "../../headers/BluespawnDrv.h"
+#include "../../common/common.h"
+
+VOID KbsPsCreateProcessNotifyRoutineEx(
+    _Inout_ PEPROCESS Process,
+    _In_ HANDLE ProcessId,
+    _Inout_opt_ PPS_CREATE_NOTIFY_INFO CreateInfo);
