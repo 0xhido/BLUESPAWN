@@ -42,6 +42,7 @@
     <Configuration>Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">Win32</Platform>
     <RootNamespace>BLUESPAWN_win_driver</RootNamespace>
+    <WindowsTargetPlatformVersion>$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -116,9 +117,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <OutDir>$(SolutionDir)artifacts\$(Platform)\$(ConfigurationName)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(ConfigurationName)\$(ProjectName)\</IntDir>
+    <TargetName>bsdrv</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <OutDir>$(SolutionDir)artifacts\$(Platform)\$(ConfigurationName)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(ConfigurationName)\$(ProjectName)\</IntDir>
+    <TargetName>bsdrv</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
@@ -132,8 +139,42 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalOptions>/INTEGRITYCHECK %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>C:\Users\13768J\Desktop\Code\BLUESPAWN\BLUESPAWN-win-driver\headers;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)headers\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <AdditionalOptions>/INTEGRITYCHECK %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>C:\Users\13768J\Desktop\Code\BLUESPAWN\BLUESPAWN-win-driver\headers;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <FilesToPackage Include="$(TargetPath)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\stl\AutoLock.h" />
+    <ClInclude Include="headers\stl\FastMutex.h" />
+    <ClInclude Include="headers\stl\LinkedList.h" />
+    <ClInclude Include="common\common.h" />
+    <ClInclude Include="headers\BluespawnDrv.h" />
+    <ClInclude Include="headers\monitor\Event.h" />
+    <ClInclude Include="headers\monitor\EventCollector.h" />
+    <ClInclude Include="headers\monitor\process.h" />
+    <ClInclude Include="headers\util\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\monitor\EventCollector.cpp" />
+    <ClCompile Include="src\monitor\Event.cpp" />
+    <ClCompile Include="src\monitor\process.cpp" />
+    <ClCompile Include="src\stl\FastMutex.cpp" />
+    <ClCompile Include="src\util\Utils.cpp" />
+    <ClCompile Include="src\BluespawnDrv.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

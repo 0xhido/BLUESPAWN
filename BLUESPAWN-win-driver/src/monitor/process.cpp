@@ -1,4 +1,6 @@
-#include "../../headers/monitor/process.h"
+#include "BluespawnDrv.h"
+#include "monitor/process.h"
+
 
 VOID
 KbsPsCreateProcessNotifyRoutineEx(
@@ -55,7 +57,7 @@ KbsPsCreateProcessNotifyRoutineEx(
             item->CommandLineLength = commandLineSize / sizeof(WCHAR);
         }
 
-        // TODO EventManager.AddEvent(item);
+        g_EventCollector.AddEvent(item);
     }
 
 }

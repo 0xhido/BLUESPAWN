@@ -1,4 +1,4 @@
-#include "../../headers/stl/FastMutex.h"
+#include "stl/FastMutex.h"
 
 void FastMutex::Init() {
 	ExInitializeFastMutex(&_mutex);

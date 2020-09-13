@@ -1,8 +1,9 @@
-#include "../headers/BluespawnDrv.h"
+#include "BluespawnDrv.h"
 
-#include "../headers/monitor/process.h"
+#include "monitor/EventCollector.h"
+#include "monitor/process.h"
 
-#include "../headers/util/Utils.h"
+#include "util/Utils.h"
 
 //
 // Declarations
@@ -20,7 +21,7 @@ PDRIVER_OBJECT g_KbsDriverObject;
 PDEVICE_OBJECT g_KbsDeviceObject;
 BOOLEAN g_PsCreateProcessNotifyRoutineExCreated;
 
-// TODO Create EventManage global instance
+EventCollector g_EventCollector;
 
 //
 //	Driver load/unload
@@ -45,7 +46,7 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 	RtlInitUnicodeString(&deviceName, DRIVER_DEVICE_NAME);
 	RtlInitUnicodeString(&symbLink, DRIVER_SYMB_LINK);
 
-	// TODO Initialize EventManager
+	g_EventCollector.Init();
 
 	do {
 		status = IoCreateDevice(
@@ -111,7 +112,7 @@ DriverUnload(_In_ PDRIVER_OBJECT DriverObject) {
 
 	UnregisterNotifyRoutineCallbacks();
 	
-	// TODO EventManager.ClearEvents();
+	g_EventCollector.ClearEvents();
 
 	IoDeleteSymbolicLink(&symbLink);
 	IoDeleteDevice(g_KbsDeviceObject);

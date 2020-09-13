@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ntifs.h>
+#include <ntddk.h>
 
 namespace utils {
 	NTSTATUS CompleteIrp(
@@ -8,4 +8,4 @@ namespace utils {
 		_Inout_ NTSTATUS status = STATUS_SUCCESS,
 		_In_ ULONG_PTR inforamtion = 0
 	);
-}
+};

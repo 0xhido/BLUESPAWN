@@ -1,4 +1,4 @@
-#include "../../headers/util/Utils.h"
+#include "util/Utils.h"
 
 namespace utils {
 	NTSTATUS CompleteIrp(
@@ -11,4 +11,4 @@ namespace utils {
 
 		return status;
 	}
-}
+};
