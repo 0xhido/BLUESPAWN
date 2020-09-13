@@ -13,8 +13,9 @@ bool EventCollector::AddEvent(_In_ Event* item) {
 	}
 	memset(listItem, 0, sizeof(LIST_ENTRY) + item->Size);
 
+	// Copy data into list item and free the event object
 	memcpy(&listItem->Data, item, item->Size);
-	ExFreePoolWithTag(&listItem->Data, DRIVER_TAG);
+	ExFreePoolWithTag(item, DRIVER_TAG);
 
 	_events.PushBack(listItem);
 	_count++;
@@ -27,8 +28,9 @@ LinkedList<EventItem, FastMutex>* EventCollector::GetEvents() {
 }
 
 void EventCollector::ClearEvents() {
-	while (_events.GetHead() != nullptr) {
+	while (!IsListEmpty(_events.GetHead())) {
 		EventItem* item = _events.RemoveHead();
 		ExFreePoolWithTag(item, DRIVER_TAG);
 	}
+	_count = 0;
 }

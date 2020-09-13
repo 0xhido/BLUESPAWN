@@ -40,18 +40,18 @@ KbsPsCreateProcessNotifyRoutineEx(
         item->dwParentProcess = HandleToULong(CreateInfo->ParentProcessId);
 
         item->FileNameLength = 0;
-        item->FileNameOffset = sizeof(item); // Starting right after the struct
+        item->FileNameOffset = sizeof(ProcessCreationEvent); // Starting right after the struct
         if (fileNameSize > 0) {
-            memcpy((UCHAR*)&item + item->FileNameOffset,
+            memcpy((UCHAR*)item + item->FileNameOffset,
                 CreateInfo->ImageFileName->Buffer,
                 fileNameSize);
             item->FileNameLength = fileNameSize / sizeof(WCHAR);
         }
 
         item->CommandLineLength = 0;
-        item->CommandLineOffset = sizeof(item) + fileNameSize;
+        item->CommandLineOffset = sizeof(ProcessCreationEvent) + fileNameSize;
         if (commandLineSize > 0) {
-            memcpy((UCHAR*)&item + item->CommandLineOffset,
+            memcpy((UCHAR*)item + item->CommandLineOffset,
                 CreateInfo->CommandLine->Buffer,
                 commandLineSize);
             item->CommandLineLength = commandLineSize / sizeof(WCHAR);
