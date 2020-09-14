@@ -1,9 +1,8 @@
 #include "BluespawnDrv.h"
 #include "monitor/process.h"
 
-
 VOID
-KbsPsCreateProcessNotifyRoutineEx(
+KbsProcessNotifyEx(
     _Inout_ PEPROCESS Process,
     _In_ HANDLE ProcessId,
     _Inout_opt_ PPS_CREATE_NOTIFY_INFO CreateInfo) {

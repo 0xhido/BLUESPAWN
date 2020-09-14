@@ -71,7 +71,7 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 		}
 		symbLinkCreated = true;
 
-		status = PsSetCreateProcessNotifyRoutineEx(KbsPsCreateProcessNotifyRoutineEx, FALSE);
+		status = PsSetCreateProcessNotifyRoutineEx(KbsProcessNotifyEx, FALSE);
 		if (!NT_SUCCESS(status)) {
 			dprint("Process notify routine registration failed (0x%08X)\n", status);
 			break;
@@ -140,5 +140,5 @@ KbsDispatchCreateClose(_In_ PDEVICE_OBJECT DeviceObject, _Inout_ PIRP Irp)
 VOID
 UnregisterNotifyRoutineCallbacks() {
 	if (g_PsCreateProcessNotifyRoutineExCreated)
-		PsSetCreateProcessNotifyRoutineEx(KbsPsCreateProcessNotifyRoutineEx, TRUE);
+		PsSetCreateProcessNotifyRoutineEx(KbsProcessNotifyEx, TRUE);
 }
