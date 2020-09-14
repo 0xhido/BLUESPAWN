@@ -15,12 +15,14 @@
 Using software driver:
 
 - Process Creation - PsSetCreateProcessNotifyRoutine(Ex)
-- Thread Creation 
-  - PsSetCreateThreadNotifyRoutine - callback is executed on the creator thread context (used for CreateRemoteThread) 
+- Thread Creation
+  - PsSetCreateThreadNotifyRoutine - callback is executed on the creator thread context (used for CreateRemoteThread)
   - PsSetCreateThreadNotifyRoutineEx - callback is executed on the newly created thread context
 - DLL Loading - PsSetLoadImageNotifyRoutine
 - Registry - CmRegisterCallback(Ex)
+  - Do as little as possible for as few keys as possible
 - Handles - ObRegisterCallbacks
+  - Could be used for process protection
 
 Using File System Minifilter:
 
