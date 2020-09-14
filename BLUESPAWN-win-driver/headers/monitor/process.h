@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../headers/BluespawnDrv.h"
-#include "../../common/common.h"
+#include "BluespawnDrv.h"
+#include "../common/common.h"
 
 VOID KbsProcessNotifyEx(
     _Inout_ PEPROCESS Process,

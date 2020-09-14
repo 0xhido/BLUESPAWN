@@ -32,3 +32,10 @@ struct ThreadEvent : Event {
     ULONG PID;
     ULONG TID;
 };
+
+struct LoadImageEvent : Event {
+    ULONG PID;
+    PVOID ImageBaseAddress;
+    ULONG ImageNameLenght;
+    ULONG ImageNameOffset;
+};
