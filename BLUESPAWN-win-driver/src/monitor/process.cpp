@@ -13,7 +13,7 @@ KbsPsCreateProcessNotifyRoutineEx(
     ULONG fileNameSize = 0;
     ULONG commandLineSize = 0;
 
-    if (CreateInfo) {
+    if (CreateInfo) {   // Process Creation
         if (CreateInfo->ImageFileName) {
             fileNameSize = CreateInfo->ImageFileName->Length;
             allocSize += fileNameSize;
@@ -30,14 +30,14 @@ KbsPsCreateProcessNotifyRoutineEx(
             return;
         }
 
-        // Item Header
+        // Event Header
         KeQuerySystemTimePrecise(&item->CreationTime);
         item->Size = sizeof(ProcessCreationEvent) + fileNameSize + commandLineSize;
         item->Type = EventType::ProcessCreate;
 
         // Process Creation Data
-        item->dwPID = HandleToULong(ProcessId);
-        item->dwParentProcess = HandleToULong(CreateInfo->ParentProcessId);
+        item->PID = HandleToULong(ProcessId);
+        item->ParentProcess = HandleToULong(CreateInfo->ParentProcessId);
 
         item->FileNameLength = 0;
         item->FileNameOffset = sizeof(ProcessCreationEvent); // Starting right after the struct
@@ -58,6 +58,19 @@ KbsPsCreateProcessNotifyRoutineEx(
         }
 
         g_EventCollector.AddEvent(item);
+        ExFreePoolWithTag(item, DRIVER_TAG);
     }
+    else {  // Process Termination
+        ProcessExitEvent item;
 
+        // Event Header
+        KeQuerySystemTimePrecise(&item.CreationTime);
+        item.Size = sizeof(ProcessExitEvent);
+        item.Type = EventType::ProcessExit;
+
+        // Process Exit Data
+        item.PID = HandleToULong(ProcessId);
+
+        g_EventCollector.AddEvent(&item);
+    }
 }

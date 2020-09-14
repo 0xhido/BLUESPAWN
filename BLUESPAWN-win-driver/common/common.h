@@ -15,11 +15,15 @@ struct Event {
     LARGE_INTEGER CreationTime;
 };
 
-typedef struct _PROCESS_CREATION_DATA : Event {
-    ULONG dwPID;
-    ULONG dwParentProcess;
+struct ProcessCreationEvent : Event {
+    ULONG PID;
+    ULONG ParentProcess;
     ULONG FileNameLength;
     ULONG FileNameOffset;
     ULONG CommandLineLength;
     ULONG CommandLineOffset;
-} PROCESS_CREATION_DATA, * PPROCESS_CREATION_DATA, ProcessCreationEvent;
+};
+
+struct ProcessExitEvent : Event {
+    ULONG PID;
+};

@@ -13,9 +13,8 @@ bool EventCollector::AddEvent(_In_ Event* item) {
 	}
 	memset(listItem, 0, sizeof(LIST_ENTRY) + item->Size);
 
-	// Copy data into list item and free the event object
+	// Copy data into list item
 	memcpy(&listItem->Data, item, item->Size);
-	ExFreePoolWithTag(item, DRIVER_TAG);
 
 	_events.PushBack(listItem);
 	_count++;
