@@ -27,3 +27,8 @@ struct ProcessCreationEvent : Event {
 struct ProcessExitEvent : Event {
     ULONG PID;
 };
+
+struct ThreadEvent : Event {
+    ULONG PID;
+    ULONG TID;
+};

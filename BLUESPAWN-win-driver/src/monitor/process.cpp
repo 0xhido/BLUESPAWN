@@ -56,6 +56,8 @@ KbsProcessNotifyEx(
             item->CommandLineLength = commandLineSize / sizeof(WCHAR);
         }
 
+        dprint("[ProcessCreation] [%ul]->[%ul] %wZ %wZ", item->ParentProcess, item->PID, CreateInfo->ImageFileName, CreateInfo->CommandLine);
+
         g_EventCollector.AddEvent(item);
         ExFreePoolWithTag(item, DRIVER_TAG);
     }
@@ -69,6 +71,8 @@ KbsProcessNotifyEx(
 
         // Process Exit Data
         item.PID = HandleToULong(ProcessId);
+
+        dprint("[ProcessExit] %ul", item.PID);
 
         g_EventCollector.AddEvent(&item);
     }

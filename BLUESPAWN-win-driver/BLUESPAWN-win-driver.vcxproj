@@ -158,6 +158,7 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\monitor\thread.h" />
     <ClInclude Include="headers\stl\AutoLock.h" />
     <ClInclude Include="headers\stl\FastMutex.h" />
     <ClInclude Include="headers\stl\LinkedList.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\monitor\EventCollector.cpp" />
     <ClCompile Include="src\monitor\Event.cpp" />
     <ClCompile Include="src\monitor\process.cpp" />
+    <ClCompile Include="src\monitor\thread.cpp" />
     <ClCompile Include="src\stl\FastMutex.cpp" />
     <ClCompile Include="src\util\Utils.cpp" />
     <ClCompile Include="src\BluespawnDrv.cpp" />

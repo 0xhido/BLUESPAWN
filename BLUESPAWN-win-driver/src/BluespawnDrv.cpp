@@ -2,6 +2,7 @@
 
 #include "monitor/EventCollector.h"
 #include "monitor/process.h"
+#include "monitor/thread.h"
 
 #include "util/Utils.h"
 
@@ -19,7 +20,9 @@ _Dispatch_type_(IRP_MJ_CREATE | IRP_MJ_CLOSE) DRIVER_DISPATCH KbsDispatchCreateC
 
 PDRIVER_OBJECT g_KbsDriverObject;
 PDEVICE_OBJECT g_KbsDeviceObject;
-BOOLEAN g_PsCreateProcessNotifyRoutineExCreated;
+
+BOOLEAN g_PsCreateProcessNotifyRoutineExCreated = FALSE;
+BOOLEAN g_PsSetCreateThreadNotifyRoutineCreated = FALSE;
 
 EventCollector g_EventCollector;
 
@@ -73,10 +76,17 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 
 		status = PsSetCreateProcessNotifyRoutineEx(KbsProcessNotifyEx, FALSE);
 		if (!NT_SUCCESS(status)) {
-			dprint("Process notify routine registration failed (0x%08X)\n", status);
+			dprint("Process notify routine (EX) registration failed (0x%08X)\n", status);
 			break;
 		}
 		g_PsCreateProcessNotifyRoutineExCreated = TRUE;
+
+		status = PsSetCreateThreadNotifyRoutine(KbsThreadNotify);
+		if (!NT_SUCCESS(status)) {
+			dprint("Thread notify routine registration failed (0x%08X)\n", status);
+			break;
+		}
+		g_PsSetCreateThreadNotifyRoutineCreated = TRUE;
 	} while (false);
 
 	if (!NT_SUCCESS(status)) {
@@ -141,4 +151,7 @@ VOID
 UnregisterNotifyRoutineCallbacks() {
 	if (g_PsCreateProcessNotifyRoutineExCreated)
 		PsSetCreateProcessNotifyRoutineEx(KbsProcessNotifyEx, TRUE);
+	if (g_PsCreateProcessNotifyRoutineExCreated)
+		PsRemoveCreateThreadNotifyRoutine(KbsThreadNotify);
+
 }

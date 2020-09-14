@@ -15,7 +15,9 @@
 Using software driver:
 
 - Process Creation - PsSetCreateProcessNotifyRoutine(Ex)
-- Thread Creation (CreateRemoteThread) - PsSetCreateThreadNotifyRoutine
+- Thread Creation 
+  - PsSetCreateThreadNotifyRoutine - callback is executed on the creator thread context (used for CreateRemoteThread) 
+  - PsSetCreateThreadNotifyRoutineEx - callback is executed on the newly created thread context
 - DLL Loading - PsSetLoadImageNotifyRoutine
 - Registry - CmRegisterCallback(Ex)
 - Handles - ObRegisterCallbacks
