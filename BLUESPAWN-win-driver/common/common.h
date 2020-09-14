@@ -6,7 +6,7 @@ enum class EventType : short {
     ProcessExit,
     ThreadCreate,
     ThreadExit,
-    ImageLoad
+    LoadImage
 };
 
 struct Event {

@@ -16,7 +16,7 @@ KbsThreadNotify(
     item.PID = HandleToULong(ProcessId);
     item.TID = HandleToULong(ThreadId);
 
-    dprint("[Thread%s] Process [%ul] Thread [%ul]", Create ? "Create" : "Exit", item.PID, item.TID);
+    dprint("[Thread%s] Process [%ul] Thread [%ul]\n", Create ? "Create" : "Exit", item.PID, item.TID);
 
     g_EventCollector.AddEvent(&item);
 }

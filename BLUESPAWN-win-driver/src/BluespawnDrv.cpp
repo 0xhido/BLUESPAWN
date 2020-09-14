@@ -3,6 +3,7 @@
 #include "monitor/EventCollector.h"
 #include "monitor/process.h"
 #include "monitor/thread.h"
+#include "monitor/image.h"
 
 #include "util/Utils.h"
 
@@ -23,6 +24,7 @@ PDEVICE_OBJECT g_KbsDeviceObject;
 
 BOOLEAN g_PsCreateProcessNotifyRoutineExCreated = FALSE;
 BOOLEAN g_PsSetCreateThreadNotifyRoutineCreated = FALSE;
+BOOLEAN g_PsSetLoadImageNotifyRoutineCreated = FALSE;
 
 EventCollector g_EventCollector;
 
@@ -87,6 +89,13 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 			break;
 		}
 		g_PsSetCreateThreadNotifyRoutineCreated = TRUE;
+
+		status = PsSetLoadImageNotifyRoutine(KbsLoadImageNotify);
+		if (!NT_SUCCESS(status)) {
+			dprint("Load image notify routine registration failed (0x%08X)\n", status);
+			break;
+		}
+		g_PsSetLoadImageNotifyRoutineCreated = TRUE;
 	} while (false);
 
 	if (!NT_SUCCESS(status)) {
@@ -95,6 +104,8 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 
 		if (DeviceObject)
 			IoDeleteDevice(DeviceObject);
+
+		UnregisterNotifyRoutineCallbacks();
 
 		return status;
 	}
@@ -153,5 +164,6 @@ UnregisterNotifyRoutineCallbacks() {
 		PsSetCreateProcessNotifyRoutineEx(KbsProcessNotifyEx, TRUE);
 	if (g_PsCreateProcessNotifyRoutineExCreated)
 		PsRemoveCreateThreadNotifyRoutine(KbsThreadNotify);
-
+	if (g_PsSetLoadImageNotifyRoutineCreated)
+		PsRemoveLoadImageNotifyRoutine(KbsLoadImageNotify);
 }
