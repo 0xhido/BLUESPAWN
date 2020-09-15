@@ -169,8 +169,10 @@
     <ClInclude Include="headers\monitor\EventCollector.h" />
     <ClInclude Include="headers\monitor\process.h" />
     <ClInclude Include="headers\util\Utils.h" />
+    <ClInclude Include="headers\util\ProcessList.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\util\ProcessList.cpp" />
     <ClCompile Include="src\monitor\EventCollector.cpp" />
     <ClCompile Include="src\monitor\Event.cpp" />
     <ClCompile Include="src\monitor\image.cpp" />

@@ -6,7 +6,8 @@ enum class EventType : short {
     ProcessExit,
     ThreadCreate,
     ThreadExit,
-    LoadImage
+    LoadImage,
+    RemoteThread
 };
 
 struct Event {
@@ -38,4 +39,10 @@ struct LoadImageEvent : Event {
     PVOID ImageBaseAddress;
     ULONG ImageNameLenght;
     ULONG ImageNameOffset;
+};
+
+struct RemoteThreadEvent : Event {
+    ULONG sourcePID;
+    ULONG targetPID;
+    ULONG targetTID;
 };

@@ -5,6 +5,7 @@
 #include "../common/common.h"
 #include "stl/FastMutex.h"
 #include "monitor/EventCollector.h"
+#include "util/ProcessList.h"
 
 #define DRIVER_NAME L"BluespawnDrv"
 #define DRIVER_DEVICE_NAME (L"\\Device\\" DRIVER_NAME)
@@ -30,6 +31,7 @@ extern ULONG g_EventListCount;
 extern FastMutex g_EventListMutex;
 
 extern EventCollector g_EventCollector;
+extern ProcessList g_ProcessList;
 
 VOID
 UnregisterNotifyRoutineCallbacks();

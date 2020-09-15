@@ -27,6 +27,7 @@ BOOLEAN g_PsSetCreateThreadNotifyRoutineCreated = FALSE;
 BOOLEAN g_PsSetLoadImageNotifyRoutineCreated = FALSE;
 
 EventCollector g_EventCollector;
+ProcessList g_ProcessList;
 
 //
 //	Driver load/unload
@@ -52,6 +53,7 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 	RtlInitUnicodeString(&symbLink, DRIVER_SYMB_LINK);
 
 	g_EventCollector.Init();
+	g_ProcessList.Init();
 
 	do {
 		status = IoCreateDevice(
@@ -89,6 +91,8 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 			break;
 		}
 		g_PsSetCreateThreadNotifyRoutineCreated = TRUE;
+
+		// Enumerate all current running processes
 
 		status = PsSetLoadImageNotifyRoutine(KbsLoadImageNotify);
 		if (!NT_SUCCESS(status)) {
@@ -134,6 +138,7 @@ DriverUnload(_In_ PDRIVER_OBJECT DriverObject) {
 	UnregisterNotifyRoutineCallbacks();
 	
 	g_EventCollector.ClearEvents();
+	g_ProcessList.ClearList();
 
 	IoDeleteSymbolicLink(&symbLink);
 	IoDeleteDevice(g_KbsDeviceObject);
@@ -162,7 +167,7 @@ VOID
 UnregisterNotifyRoutineCallbacks() {
 	if (g_PsCreateProcessNotifyRoutineExCreated)
 		PsSetCreateProcessNotifyRoutineEx(KbsProcessNotifyEx, TRUE);
-	if (g_PsCreateProcessNotifyRoutineExCreated)
+	if (g_PsSetCreateThreadNotifyRoutineCreated)
 		PsRemoveCreateThreadNotifyRoutine(KbsThreadNotify);
 	if (g_PsSetLoadImageNotifyRoutineCreated)
 		PsRemoveLoadImageNotifyRoutine(KbsLoadImageNotify);

@@ -58,8 +58,10 @@ KbsProcessNotifyEx(
 
         dprint("[ProcessCreation] [%ul]->[%ul] %wZ %wZ\n", item->ParentProcess, item->PID, CreateInfo->ImageFileName, CreateInfo->CommandLine);
 
+        g_ProcessList.AddProcess(item->PID);
         g_EventCollector.AddEvent(item);
         ExFreePoolWithTag(item, DRIVER_TAG);
+
     }
     else {  // Process Termination
         ProcessExitEvent item;
@@ -74,6 +76,7 @@ KbsProcessNotifyEx(
 
         dprint("[ProcessExit] %ul\n", item.PID);
 
+        g_ProcessList.RemoveProcess(item.PID);
         g_EventCollector.AddEvent(&item);
     }
 }

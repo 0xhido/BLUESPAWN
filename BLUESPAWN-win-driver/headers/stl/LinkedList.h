@@ -39,6 +39,10 @@ public:
 		return CONTAINING_RECORD(entry, T, Entry);
 	}
 
+	TLock& GetLock() {
+		return _lock;
+	}
+
 private:
 	LIST_ENTRY _head;
 	TLock _lock;
